@@ -1,0 +1,10 @@
+export declare class CreatePlaylistDto {
+    avtUser: string;
+    src: string;
+    name: string;
+    author: string;
+    watched: string;
+    date: string;
+    constructor();
+    private getCurrentDateFormatted;
+}
