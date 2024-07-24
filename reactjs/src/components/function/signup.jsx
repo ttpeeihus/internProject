@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3001/users'; // Thay thế bằng URL API thực tế của bạn
+const baseURL = 'http://localhost:3002/users'; // Thay thế bằng URL API thực tế của bạn
 
 // Hàm đăng ký người dùng sử dụng Axios
 export const signUp = async (username, password, email, role) => {

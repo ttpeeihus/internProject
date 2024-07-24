@@ -18,7 +18,7 @@ export const EditUser = ({ idUser, UserEdit }) => {
     }, [UserEdit]);
 
     const handleSubmit = async (e) => {
-        // e.preventDefault();
+        e.preventDefault();
         const User = {
             id: idUser,
             username: username,

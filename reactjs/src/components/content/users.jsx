@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { formatViews, timeAgo } from '../function/content';
-import '../css/content.css'; // Đảm bảo rằng tệp content.css nằm cùng cấp với tệp Playlist.js
+import '../css/content.css';
 import { Btn } from './button';
 
 export const Playlist = () => {
@@ -10,8 +10,7 @@ export const Playlist = () => {
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/playlist/');
-        // Assuming response.data is an array of playlist items with a 'date' field
+        const response = await axios.get('http://localhost:3002/playlist/');
         const sortedPlaylist = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
         setPlayList(sortedPlaylist);
       } catch (error) {
@@ -22,6 +21,25 @@ export const Playlist = () => {
     fetchPlaylist();
   }, []);
 
+  // Sử dụng useEffect để theo dõi sự thay đổi của playList từ backend
+  useEffect(() => {
+    const updatePlaylist = async () => {
+      try {
+        const response = await axios.get('http://localhost:3002/playlist/');
+        const sortedPlaylist = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setPlayList(sortedPlaylist);
+      } catch (error) {
+        console.error('Error updating playlist:', error);
+      }
+    };
+
+    // Lắng nghe sự thay đổi của playlist từ backend mỗi 10 giây
+    const interval = setInterval(() => {
+      updatePlaylist();
+    }, 1000); // Thay đổi thời gian tùy thuộc vào tần suất bạn muốn
+
+    return () => clearInterval(interval); // Cleanup để ngừng lắng nghe khi component unmount
+  }, []); // [] đảm bảo useEffect này chỉ chạy một lần sau khi component mount
 
   const renderVideo = (list, index) => (
     <div key={index} className="video-wrapper">
@@ -47,7 +65,7 @@ export const Playlist = () => {
 
   return (
     <div className="content">
-        <Btn />
+      <Btn />
       <div className="video">
         {playList.map((list, index) => renderVideo(list, index))}
       </div>

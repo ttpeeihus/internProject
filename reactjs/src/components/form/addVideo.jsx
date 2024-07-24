@@ -7,7 +7,7 @@ export const AddVideo = () => {
     const [name, setName] = useState('');
 
     const handleSubmit = async (e) => {
-        // e.preventDefault();
+        e.preventDefault();
 
         try {
             const response = await addVideo(src, name);

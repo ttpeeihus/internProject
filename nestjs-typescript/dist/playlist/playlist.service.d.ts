@@ -7,7 +7,7 @@ export declare class PlaylistService {
     constructor(videoRepository: Repository<Playlist>);
     create(_createPlaylistDto: CreatePlaylistDto): Promise<Playlist>;
     findAll(): Promise<Playlist[]>;
-    findOneVideo(id: number): Promise<Playlist | null>;
+    findOneVideo(id: number): Promise<Playlist | null> | null;
     update(id: number, updateVideoDto: UpdatePlaylistDto): Promise<"Video has been successfully updated" | null>;
     remove(id: number): Promise<string>;
 }

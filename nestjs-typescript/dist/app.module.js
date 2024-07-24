@@ -12,29 +12,24 @@ const app_service_1 = require("./app.service");
 const users_module_1 = require("./users/users.module");
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const playlist_entity_1 = require("./playlist/entities/playlist.entity");
-const user_entity_1 = require("./users/entities/user.entity");
+const auth_module_1 = require("./auth/auth.module");
 const playlist_module_1 = require("./playlist/playlist.module");
+const database_config_1 = require("./config/database.config");
+const roles_guard_1 = require("./auth/guards/roles.guard");
+const jwt_1 = require("@nestjs/jwt");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forRoot({
-                type: 'mysql',
-                host: 'localhost',
-                port: 3306,
-                username: 'phuoctt',
-                password: 'phuoctt',
-                database: 'youtube',
-                entities: [user_entity_1.Users, playlist_entity_1.Playlist],
-            }),
+            typeorm_1.TypeOrmModule.forRoot(database_config_1.databaseConfig),
             users_module_1.UsersModule,
             playlist_module_1.PlaylistModule,
+            auth_module_1.AuthModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [roles_guard_1.RolesGuard, app_service_1.AppService, jwt_1.JwtService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

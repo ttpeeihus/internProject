@@ -24,11 +24,11 @@ let PlaylistService = class PlaylistService {
     }
     create(_createPlaylistDto) {
         const newVideo = this.videoRepository.create({ ..._createPlaylistDto });
-        console.log(newVideo);
+        console.log("Tạo video thành công " + newVideo);
         return this.videoRepository.save(newVideo);
     }
     findAll() {
-        console.log(this.videoRepository.find());
+        console.log("Lấy danh sách video thành công");
         return this.videoRepository.find();
     }
     findOneVideo(id) {
@@ -37,8 +37,13 @@ let PlaylistService = class PlaylistService {
                 id: id,
             },
         };
-        console.log(this.videoRepository.findOne(options));
-        return this.videoRepository.findOne(options);
+        let vid = this.videoRepository.findOne(options);
+        if (!vid) {
+            console.log(`Video with ID ${id} not found`);
+            return null;
+        }
+        console.log("Lấy video có id =" + id + " " + vid);
+        return vid;
     }
     async update(id, updateVideoDto) {
         const vid = await this.findOneVideo(id);

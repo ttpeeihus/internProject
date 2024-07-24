@@ -3,28 +3,23 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Playlist } from './playlist/entities/playlist.entity';
-import { Users } from './users/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 import { PlaylistModule } from './playlist/playlist.module';
-// import { AuthModule } from './auth/auth.module';
+import { databaseConfig } from './config/database.config';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/guards/roles.guard';
+import { JwtService } from '@nestjs/jwt';
+
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'phuoctt',
-      password: 'phuoctt',
-      database: 'youtube',
-      entities: [Users ,Playlist],
-      // synchronize: true,
-    }),
+    TypeOrmModule.forRoot(databaseConfig),
     UsersModule,
     PlaylistModule,
-    // AuthModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [RolesGuard, AppService, JwtService],
+  
 })
 export class AppModule {}

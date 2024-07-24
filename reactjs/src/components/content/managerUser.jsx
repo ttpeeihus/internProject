@@ -13,14 +13,43 @@ export const Users = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/users/');
-        setUser(response.data); // Assuming response.data is an array of playlist items
+        const token = localStorage.getItem('token');
+        const options = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        let response = await axios.get('http://localhost:3002/users/', options);
+        setUser(response.data); 
       } catch (error) {
         console.error('Error fetching users:', error);
       }
     };
 
     fetchUsers();
+  }, []);
+
+  useEffect(() => {
+    const updateUser = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const options = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        let response = await axios.get('http://localhost:3002/users/', options);
+        setUser(response.data); 
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    const interval = setInterval(() => {
+      updateUser();
+    }, 1000); 
+
+    return () => clearInterval(interval); 
   }, []);
 
     const editbtn = (id, editUser) => {
@@ -31,7 +60,7 @@ export const Users = () => {
 
     const renderUser = (users) => {
         if (!Array.isArray(users) || users.length === 0) {
-          return null; // Hoặc bạn có thể trả về thông báo hoặc UI khác để xử lý trường hợp không có dữ liệu
+          return null; 
         }
       
         return (

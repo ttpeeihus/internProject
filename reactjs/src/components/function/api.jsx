@@ -1,6 +1,7 @@
 import axios from 'axios';
-const baseVideoURL = 'http://localhost:3001/playlist'; 
-const baseUserURL = 'http://localhost:3001/users'; 
+const baseVideoURL = 'http://localhost:3002/playlist'; 
+const baseUserURL = 'http://localhost:3002/users'; 
+let token = localStorage.getItem('token');
 
 export const addVideo = (src, name) => {
     let today = new Date();
@@ -16,13 +17,13 @@ export const addVideo = (src, name) => {
         avtUser: 'penguin.png',
         src: src,
         name: name,
-        author: 'phuoctt',
+        author: localStorage.getItem('username'),
         watched: '0',
         date: today
     };
-
     return axios.post(`${baseVideoURL}`, newVideo, {
         headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
         }
     })
@@ -43,7 +44,7 @@ export const logout = (username) => {
 
     return axios.post('/logout', data, {
         headers: {
-            'Content-Type': 'application/json'
+            Authorization: `Bearer ${token}`       
         }
     })
     .then(response => {
@@ -69,6 +70,7 @@ export const editVideo = (newName) => {
     body = JSON.stringify(body);
     const options = {
         headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
         }
     };
@@ -95,6 +97,7 @@ export const editUser = (editUser) => {
     body = JSON.stringify(body);
     const options = {
         headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
         }
     };
@@ -116,16 +119,15 @@ export const delVideo = (id) => {
 
     // Nếu người dùng chọn "OK"
     if (confirmDelete) {
-        const idVideo = { id };
 
         const options = {
             headers: {
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            data: idVideo // Use data instead of body for Axios
         };
 
-        return axios.delete(`${baseVideoURL}/${id}`, null, options)
+        return axios.delete(`${baseVideoURL}/${id}`, options)
             .then(response => {
                 console.log('Video delete successfully:', response.data);
                 return response.data; // Optionally return data if needed
@@ -146,16 +148,15 @@ export const delUser = (id) => {
 
     // Nếu người dùng chọn "OK"
     if (confirmDelete) {
-        const idUser = { id };
 
         const options = {
             headers: {
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            data: idUser 
         };
 
-        return axios.delete(`${baseUserURL}/${id}`, null, options)
+        return axios.delete(`${baseUserURL}/${id}`, options)
             .then(response => {
                 console.log('User delete successfully:', response.data);
                 return response.data; 
