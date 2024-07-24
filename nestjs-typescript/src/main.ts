@@ -6,6 +6,6 @@ async function bootstrap() {
   app.enableCors({
     origin: 'http://localhost:3000', // Thay đổi thành nguồn của bạn
   });
-  await app.listen(3001);
+  await app.listen(3002);
 }
 bootstrap();

@@ -1,18 +1,23 @@
-// import { Module } from '@nestjs/common';
-// import { AuthService } from './auth.service';
-// import { UsersModule } from '../users/users.module'; // Import UsersModule if UsersService is provided there
-// import { JwtModule } from '@nestjs/jwt';
-// import { jwtConstants } from './constants';
+// auth.module.ts
+import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { AuthService } from './auth.service';
+import { UsersModule } from '../users/users.module';
+import { jwtConstants } from './constants';
+import { JwtStrategy } from './jwt.strategy';
 
-// @Module({
-//   imports: [
-//     UsersModule, // Ensure UsersModule is imported if UsersService is provided there
-//     JwtModule.register({
-//       secret: jwtConstants.secret,
-//       signOptions: { expiresIn: '60s' },
-//     }),
-//   ],
-//   providers: [AuthService],
-//   exports: [AuthService], // Export AuthService if needed
-// })
-// export class AuthModule {}
+
+@Module({
+  imports: [
+    UsersModule,
+    PassportModule,
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '3600s' },  // Token có hiệu lực 1 giờ
+    }),
+  ],
+  providers: [AuthService, JwtStrategy],
+  exports: [AuthService],
+})
+export class AuthModule {}

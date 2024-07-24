@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { Users } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import { jwtConstants } from '../auth/constants';
 
 @Injectable()
 export class UsersService {
@@ -43,7 +44,7 @@ export class UsersService {
   }
 
   findAll() {
-    console.log(this.userRepository.find());
+    console.log("Lấy danh sách người dùng thành công");
     return this.userRepository.find();
   }
 
@@ -53,8 +54,13 @@ export class UsersService {
         Username: username,
       },
     };
-    console.log(this.userRepository.findOne(options));
-    return this.userRepository.findOne(options);
+    let user = this.userRepository.findOne(options);
+    if (!user) {
+      console.log(`User with username ${username} not found`);
+      return null;
+    }
+    console.log("Lấy người dùng có username ="+ username +" "+ user);
+    return user;
   }
 
   findOneUser(UserID: number) {
@@ -63,14 +69,20 @@ export class UsersService {
         UserID: UserID,
       },
     };
-    console.log(this.userRepository.findOne(options));
-    return this.userRepository.findOne(options);
+    let user = this.userRepository.findOne(options);
+    if (!user) {
+      console.log(`User with ID ${UserID} not found`);
+      return null;
+    }
+    console.log("Lấy người dùng có ID ="+ UserID +" "+ user);
+    return user;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.findOneUser(id);
 
     if (!user) {
+      console.log(`User with ID ${id} not found`);
       return null;
     }
 
@@ -89,7 +101,7 @@ export class UsersService {
     }
 
     await this.userRepository.save(user);
-    console.log(`update ${user}`);
+    console.log("update "+ user);
     return user;
   }
 
@@ -105,7 +117,7 @@ export class UsersService {
     return `User with ID ${id} has been successfully deleted`;
   }
 
-  async checkin(username: string, password: string): Promise<{ token: string; role: string } | string> {
+  async checkin(username: string, password: string): Promise<{ token: string; role: string; username:string } | string> {
     const user = await this.userRepository.findOne({ where: { Username: username } });
 
     if (!user) {
@@ -120,12 +132,13 @@ export class UsersService {
       const payload = {
         username: user.Username,
         sub: user.UserID, // Thay bằng trường ID của người dùng (UserID hoặc những gì tương tự)
-        role: user.Role
+        roles: user.Role
       };
-      const token = jwt.sign(payload, 'privatekey', { expiresIn: '1h' });
+      const token = jwt.sign(payload, jwtConstants.secret, { expiresIn: '1h' });
       const role = String(user.Role); 
+      const username = String(user.Username);
       
-      return { token, role }; // Trả về đối tượng chứa cả token và role
+      return { token, role, username }; // Trả về đối tượng chứa cả token và role
       
     } else {
       console.log('Mật khẩu không chính xác');

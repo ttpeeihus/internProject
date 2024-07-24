@@ -7,7 +7,7 @@ import { editVideo } from '../function/api';
 
 export const EditVideo = ({idVideo}) => {
     const handleSubmit = async (e) => {
-        // e.preventDefault();
+        e.preventDefault();
         const newName = {name: e.target.changeName.value,
                         id: idVideo
         };

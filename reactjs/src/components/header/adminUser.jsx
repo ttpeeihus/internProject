@@ -21,8 +21,7 @@ export const AdminUserHeader = () => {
     };
 
     const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
+        localStorage.clear();
         window.location.href = '/signin';
     };
 

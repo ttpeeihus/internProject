@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3001/users'; // Thay thế bằng URL API thực tế của bạn
+const baseURL = 'http://localhost:3002/users'; // Thay thế bằng URL API thực tế của bạn
 
 // Hàm đăng nhập
 export const signIn = async (username, password) => {
@@ -14,6 +14,7 @@ export const signIn = async (username, password) => {
     }
     localStorage.setItem('token', response.data.token);
     localStorage.setItem('role', response.data.role);
+    localStorage.setItem('username', response.data.username);
     return 'Đăng nhập thành công.';    
   } catch (error) {
     console.error('Error signing in:', error);

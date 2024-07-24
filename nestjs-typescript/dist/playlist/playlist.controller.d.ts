@@ -6,7 +6,7 @@ export declare class PlaylistController {
     constructor(playlistService: PlaylistService);
     create(createPlaylistDto: CreatePlaylistDto): Promise<import("./entities/playlist.entity").Playlist>;
     findAll(): Promise<import("./entities/playlist.entity").Playlist[]>;
-    findOne(id: string): Promise<import("./entities/playlist.entity").Playlist | null>;
+    findOne(id: string): Promise<import("./entities/playlist.entity").Playlist | null> | null;
     update(id: string, updatePlaylistDto: UpdatePlaylistDto): Promise<"Video has been successfully updated" | null>;
     remove(id: string): Promise<string>;
 }

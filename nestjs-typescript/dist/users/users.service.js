@@ -19,6 +19,7 @@ const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const constants_1 = require("../auth/constants");
 let UsersService = class UsersService {
     constructor(userRepository) {
         this.userRepository = userRepository;
@@ -47,7 +48,7 @@ let UsersService = class UsersService {
         }
     }
     findAll() {
-        console.log(this.userRepository.find());
+        console.log("Lấy danh sách người dùng thành công");
         return this.userRepository.find();
     }
     findOneUserName(username) {
@@ -56,8 +57,13 @@ let UsersService = class UsersService {
                 Username: username,
             },
         };
-        console.log(this.userRepository.findOne(options));
-        return this.userRepository.findOne(options);
+        let user = this.userRepository.findOne(options);
+        if (!user) {
+            console.log(`User with username ${username} not found`);
+            return null;
+        }
+        console.log("Lấy người dùng có username =" + username + " " + user);
+        return user;
     }
     findOneUser(UserID) {
         const options = {
@@ -65,12 +71,18 @@ let UsersService = class UsersService {
                 UserID: UserID,
             },
         };
-        console.log(this.userRepository.findOne(options));
-        return this.userRepository.findOne(options);
+        let user = this.userRepository.findOne(options);
+        if (!user) {
+            console.log(`User with ID ${UserID} not found`);
+            return null;
+        }
+        console.log("Lấy người dùng có ID =" + UserID + " " + user);
+        return user;
     }
     async update(id, updateUserDto) {
         const user = await this.findOneUser(id);
         if (!user) {
+            console.log(`User with ID ${id} not found`);
             return null;
         }
         if (updateUserDto.Username !== undefined) {
@@ -87,7 +99,7 @@ let UsersService = class UsersService {
             user.PasswordHash = hashedPassword;
         }
         await this.userRepository.save(user);
-        console.log(`update ${user}`);
+        console.log("update " + user);
         return user;
     }
     async remove(id) {
@@ -110,11 +122,12 @@ let UsersService = class UsersService {
             const payload = {
                 username: user.Username,
                 sub: user.UserID,
-                role: user.Role
+                roles: user.Role
             };
-            const token = jwt.sign(payload, 'privatekey', { expiresIn: '1h' });
+            const token = jwt.sign(payload, constants_1.jwtConstants.secret, { expiresIn: '1h' });
             const role = String(user.Role);
-            return { token, role };
+            const username = String(user.Username);
+            return { token, role, username };
         }
         else {
             console.log('Mật khẩu không chính xác');

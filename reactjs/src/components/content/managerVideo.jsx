@@ -10,17 +10,26 @@ export const Playlist = () => {
   const [playList, setPlayList] = useState([]);
   const [isVisible, setIsVisible] = useState(false); // State để điều khiển hiển thị EditVideo
   const [idVideo, setIdVideo] = useState(0);
+  const [refreshKey, setRefreshKey] = useState(0); // State để cập nhật danh sách playList
 
   const editbtn = (id) => {
     setIdVideo(id);
-    console.log(id);
     setIsVisible(!isVisible);
-  }
+  };
 
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/playlist/');
+        const token = localStorage.getItem('token');
+
+        const options = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        let response = await axios.get('http://localhost:3002/playlist/', options);
+
         const sortedPlaylist = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
         setPlayList(sortedPlaylist);
       } catch (error) {
@@ -29,6 +38,34 @@ export const Playlist = () => {
     };
 
     fetchPlaylist();
+  }, [refreshKey]);
+
+  useEffect(() => {
+    const updatePlaylist = async () => {
+      try {
+        const token = localStorage.getItem('token');
+
+        const options = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        let response = await axios.get('http://localhost:3002/playlist/', options);
+
+        const sortedPlaylist = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setPlayList(sortedPlaylist);
+      } catch (error) {
+        console.error('Error updating playlist:', error);
+      }
+    };
+
+    // Lắng nghe sự thay đổi của playlist từ backend mỗi 10 giây
+    const interval = setInterval(() => {
+      updatePlaylist();
+    }, 1000); // Thay đổi thời gian tùy thuộc vào tần suất bạn muốn
+
+    return () => clearInterval(interval); // Cleanup để ngừng lắng nghe khi component unmount
   }, []);
 
   const renderVideo = (list, index) => (
@@ -50,10 +87,20 @@ export const Playlist = () => {
           </div>
         </div>
         <div className="change" onClick={() => editbtn(list.id)}>Sửa</div>
-        <div className="delete" onClick={() => delVideo(list.id, index)}>Xóa</div>
+        <div className="delete" onClick={() => handleDelete(list.id)}>Xóa</div>
       </div>
     </div>
   );
+
+  const handleDelete = async (id) => {
+    try {
+      await delVideo(id);
+      // Sau khi xóa thành công, cập nhật lại danh sách playList bằng cách tăng refreshKey
+      setRefreshKey((prevKey) => prevKey + 1);
+    } catch (error) {
+      console.error('Error deleting video:', error);
+    }
+  };
 
   return (
     <div className="content">

@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseURL = 'http://localhost:3001/users'; 
+const baseURL = 'http://localhost:3002/users'; 
 
 const resetpass = async (username, password, email) => {
   try {

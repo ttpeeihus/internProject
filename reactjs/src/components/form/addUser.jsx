@@ -12,7 +12,7 @@ export const AddUser = () => {
     const [role, setRole] = useState('');
 
     const handleSubmit = async (e) => {
-        // e.preventDefault();
+        e.preventDefault();
         try {
             if (!validateUsernamePassword(username, password)) {
                 return; 

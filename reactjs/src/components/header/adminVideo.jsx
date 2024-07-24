@@ -21,8 +21,7 @@ export const AdminVideoHeader = () => {
     };
 
     const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
+        localStorage.clear();
         console.log('Đăng xuất thành công');
         window.location.href = '/signin';
     };
