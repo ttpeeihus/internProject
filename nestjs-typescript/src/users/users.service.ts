@@ -118,7 +118,7 @@ export class UsersService {
   }
 
   async checkin(username: string, password: string): Promise<{ token: string; role: string; username:string } | string> {
-    const user = await this.userRepository.findOne({ where: { Username: username } });
+    const user = await this.findOneUserName(username);
 
     if (!user) {
       console.log('Người dùng không tồn tại');
@@ -147,7 +147,7 @@ export class UsersService {
   }
 
   async repass(username: string, newPassword: string, email: string): Promise<string> {
-    const user = await this.userRepository.findOne({ where: { Username: username } });
+    const user = await this.findOneUserName(username);
 
     if (!user) {
       console.log('Người dùng không tồn tại');

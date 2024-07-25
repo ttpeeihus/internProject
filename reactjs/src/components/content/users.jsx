@@ -7,20 +7,6 @@ import { Btn } from './button';
 export const Playlist = () => {
   const [playList, setPlayList] = useState([]);
 
-  useEffect(() => {
-    const fetchPlaylist = async () => {
-      try {
-        const response = await axios.get('http://localhost:3002/playlist/');
-        const sortedPlaylist = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
-        setPlayList(sortedPlaylist);
-      } catch (error) {
-        console.error('Error fetching playlist:', error);
-      }
-    };
-
-    fetchPlaylist();
-  }, []);
-
   // Sử dụng useEffect để theo dõi sự thay đổi của playList từ backend
   useEffect(() => {
     const updatePlaylist = async () => {
@@ -36,7 +22,7 @@ export const Playlist = () => {
     // Lắng nghe sự thay đổi của playlist từ backend mỗi 10 giây
     const interval = setInterval(() => {
       updatePlaylist();
-    }, 1000); // Thay đổi thời gian tùy thuộc vào tần suất bạn muốn
+    }, 500); // Thay đổi thời gian tùy thuộc vào tần suất bạn muốn
 
     return () => clearInterval(interval); // Cleanup để ngừng lắng nghe khi component unmount
   }, []); // [] đảm bảo useEffect này chỉ chạy một lần sau khi component mount

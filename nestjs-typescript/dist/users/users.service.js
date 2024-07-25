@@ -112,7 +112,7 @@ let UsersService = class UsersService {
         return `User with ID ${id} has been successfully deleted`;
     }
     async checkin(username, password) {
-        const user = await this.userRepository.findOne({ where: { Username: username } });
+        const user = await this.findOneUserName(username);
         if (!user) {
             console.log('Người dùng không tồn tại');
             return 'Người dùng không tồn tại';
@@ -135,7 +135,7 @@ let UsersService = class UsersService {
         }
     }
     async repass(username, newPassword, email) {
-        const user = await this.userRepository.findOne({ where: { Username: username } });
+        const user = await this.findOneUserName(username);
         if (!user) {
             console.log('Người dùng không tồn tại');
             return 'Người dùng không tồn tại';
