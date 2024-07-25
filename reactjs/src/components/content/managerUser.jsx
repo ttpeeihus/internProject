@@ -11,25 +11,6 @@ export const Users = () => {
   const [idUser, setIdUser] = useState(0);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const options = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-        let response = await axios.get('http://localhost:3002/users/', options);
-        setUser(response.data); 
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
-
-    fetchUsers();
-  }, []);
-
-  useEffect(() => {
     const updateUser = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -47,7 +28,7 @@ export const Users = () => {
 
     const interval = setInterval(() => {
       updateUser();
-    }, 1000); 
+    }, 500); 
 
     return () => clearInterval(interval); 
   }, []);

@@ -17,12 +17,14 @@ const playlist_module_1 = require("./playlist/playlist.module");
 const database_config_1 = require("./config/database.config");
 const roles_guard_1 = require("./auth/guards/roles.guard");
 const jwt_1 = require("@nestjs/jwt");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot(),
             typeorm_1.TypeOrmModule.forRoot(database_config_1.databaseConfig),
             users_module_1.UsersModule,
             playlist_module_1.PlaylistModule,

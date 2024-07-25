@@ -61,6 +61,7 @@ export const Users = () => {
                 <img src="/images/penguin.png" style={{ width: '50px', height: '50px' }} onClick={accounts} alt="Penguin" />
             </div>
             <div className={`account ${isVisible ? 'visible' : ''}`}>
+                <div className='name'>{localStorage.getItem('username')}</div>
                 <div className="logout" onClick={logout}>Đăng xuất</div>
             </div>
             <div className={`form ${formIsVisible ? 'visible' : ''}`}>

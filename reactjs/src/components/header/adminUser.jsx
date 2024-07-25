@@ -62,6 +62,7 @@ export const AdminUserHeader = () => {
                     <img src="/images/penguin.png" style={{ width: '50px', height: '50px' }} onClick={accounts} alt="Penguin" />
                 </div>
                 <div className={`account ${isVisible ? 'visible' : ''}`}>
+                    <div className='name'>{localStorage.getItem('username')}</div>
                     <a href="/admin/video"><div className="admin">Quản lý video</div></a>
                     <div className="logout" onClick={logout}>Đăng xuất</div>
                 </div>
