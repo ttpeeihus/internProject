@@ -24,11 +24,11 @@ let RolesGuard = class RolesGuard {
         const request = context.switchToHttp().getRequest();
         const user = request.user;
         if (!user || !user.roles || user.roles.length === 0) {
-            throw new common_1.UnauthorizedException('Access denied, user information is missing or invalid');
+            throw new common_1.UnauthorizedException('Truy cập bị từ chối, thông tin người dùng bị thiếu hoặc không hợp lệ');
         }
         const hasRole = roles.some(role => user.roles.includes(role));
         if (!hasRole) {
-            throw new common_1.UnauthorizedException('Access denied, insufficient permissions');
+            throw new common_1.UnauthorizedException('Truy cập bị từ chối, không đủ quyền');
         }
         return true;
     }

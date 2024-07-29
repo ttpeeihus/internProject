@@ -44,71 +44,70 @@ let UsersService = class UsersService {
             return 'Tạo tài khoản thành công';
         }
         catch (error) {
-            console.error('Error creating user:', error);
+            console.error('Đã xảy ra lỗi khi tạo tài khoản:', error);
         }
     }
     findAll() {
-        console.log("Lấy danh sách người dùng thành công");
         return this.userRepository.find();
     }
     findOneUserName(username) {
-        const options = {
-            where: {
-                Username: username,
-            },
-        };
-        let user = this.userRepository.findOne(options);
+        let user = this.userRepository.findOne({ where: { Username: username } });
         if (!user) {
-            console.log(`User with username ${username} not found`);
+            console.log(`Không tìm thấy người dùng với tên người dùng ${username}`);
             return null;
         }
-        console.log("Lấy người dùng có username =" + username + " " + user);
+        console.log("Lấy người dùng có username = " + username);
         return user;
     }
     findOneUser(UserID) {
-        const options = {
-            where: {
-                UserID: UserID,
-            },
-        };
-        let user = this.userRepository.findOne(options);
+        let user = this.userRepository.findOne({ where: { UserID: UserID } });
         if (!user) {
-            console.log(`User with ID ${UserID} not found`);
+            console.log(`Không tìm thấy người dùng với ID = ${UserID}`);
             return null;
         }
-        console.log("Lấy người dùng có ID =" + UserID + " " + user);
+        console.log("Lấy người dùng có ID = " + UserID);
         return user;
     }
     async update(id, updateUserDto) {
         const user = await this.findOneUser(id);
         if (!user) {
-            console.log(`User with ID ${id} not found`);
+            console.log(`Không tìm thấy người dùng với ID = ${id}`);
             return null;
         }
-        if (updateUserDto.Username !== undefined) {
+        let updated = false;
+        if (updateUserDto.Username !== undefined && updateUserDto.Username !== user.Username) {
             user.Username = updateUserDto.Username;
+            updated = true;
         }
-        if (updateUserDto.Email !== undefined) {
+        if (updateUserDto.Email !== undefined && updateUserDto.Email !== user.Email) {
             user.Email = updateUserDto.Email;
+            updated = true;
         }
-        if (updateUserDto.Role !== undefined) {
+        if (updateUserDto.Role !== undefined && updateUserDto.Role !== user.Role) {
             user.Role = updateUserDto.Role;
+            updated = true;
         }
-        if (updateUserDto.PasswordHash !== undefined) {
+        if (updateUserDto.PasswordHash !== undefined && updateUserDto.PasswordHash !== user.PasswordHash) {
             const hashedPassword = await bcrypt.hash(updateUserDto.PasswordHash, 10);
             user.PasswordHash = hashedPassword;
+            updated = true;
         }
-        await this.userRepository.save(user);
-        console.log("update " + user);
+        if (updated) {
+            await this.userRepository.save(user);
+            console.log("Người dùng với ID: ", id, " đã được cập nhật thành công");
+        }
+        else {
+            console.log("Không phát hiện thay đổi cho người dùng với ID: ", id);
+        }
         return user;
     }
     async remove(id) {
         const user = await this.findOneUser(id);
         if (!user) {
-            throw new common_1.NotFoundException(`User with ID ${id} not found`);
+            throw new common_1.NotFoundException(`Không tìm thấy người dùng với ID = ${id}`);
         }
         await this.userRepository.delete(id);
-        console.log(`delete ${user}`);
+        console.log(`Xóa người dùng có ID = ${id} thành công`);
         return `User with ID ${id} has been successfully deleted`;
     }
     async checkin(username, password) {
@@ -124,7 +123,7 @@ let UsersService = class UsersService {
                 sub: user.UserID,
                 roles: user.Role
             };
-            const token = jwt.sign(payload, constants_1.jwtConstants.secret, { expiresIn: '1h' });
+            const token = jwt.sign(payload, constants_1.jwtConstants.secret, { expiresIn: '7d' });
             const role = String(user.Role);
             const username = String(user.Username);
             return { token, role, username };

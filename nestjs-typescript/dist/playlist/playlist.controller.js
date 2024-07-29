@@ -27,6 +27,9 @@ let PlaylistController = class PlaylistController {
     create(createPlaylistDto) {
         return this.playlistService.create(createPlaylistDto);
     }
+    incrementViews(id) {
+        return this.playlistService.incrementViews(+id);
+    }
     findAll() {
         return this.playlistService.findAll();
     }
@@ -49,6 +52,13 @@ __decorate([
     __metadata("design:paramtypes", [create_playlist_dto_1.CreatePlaylistDto]),
     __metadata("design:returntype", void 0)
 ], PlaylistController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)(':id/views'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], PlaylistController.prototype, "incrementViews", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

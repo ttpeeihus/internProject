@@ -75,16 +75,19 @@ export const EditUser = ({ idUser, UserEdit }) => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     /><br /><br />
-                    <label htmlFor="edit-role">Role:</label><br />
-                    <input
-                        type="text"
-                        id="edit-role"
-                        name="edit-role"
+                    <label htmlFor="role">Role:</label><br />
+                    <select
+                        id="role"
+                        name="role"
                         value={role}
                         onChange={(e) => setRole(e.target.value)}
                         required
-                    /><br /><br />
-                    <button type="submit" id="edit-submit">Submit</button>
+                    >
+                        <option value="" disabled>Select a role</option>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select><br /><br />
+                    <button type="submit" id="submit">Submit</button>
                 </form>
             </div>
         </div>

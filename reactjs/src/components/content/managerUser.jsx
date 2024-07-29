@@ -22,7 +22,11 @@ export const Users = () => {
         let response = await axios.get('http://localhost:3002/users/', options);
         setUser(response.data); 
       } catch (error) {
+        if (error.response && error.response.status === 401) {
+          localStorage.clear();
+        }
         console.error('Error fetching users:', error);
+        window.location.replace('/signin');
       }
     };
 

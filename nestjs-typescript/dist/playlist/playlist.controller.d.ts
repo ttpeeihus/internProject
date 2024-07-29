@@ -5,6 +5,7 @@ export declare class PlaylistController {
     private readonly playlistService;
     constructor(playlistService: PlaylistService);
     create(createPlaylistDto: CreatePlaylistDto): Promise<import("./entities/playlist.entity").Playlist>;
+    incrementViews(id: string): Promise<import("./entities/playlist.entity").Playlist | null>;
     findAll(): Promise<import("./entities/playlist.entity").Playlist[]>;
     findOne(id: string): Promise<import("./entities/playlist.entity").Playlist | null> | null;
     update(id: string, updatePlaylistDto: UpdatePlaylistDto): Promise<"Video has been successfully updated" | null>;

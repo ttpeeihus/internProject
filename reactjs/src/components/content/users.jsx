@@ -7,7 +7,14 @@ import { Btn } from './button';
 export const Playlist = () => {
   const [playList, setPlayList] = useState([]);
 
-  // Sử dụng useEffect để theo dõi sự thay đổi của playList từ backend
+  const handleVideoClick = async (id) => {
+    try {
+      await axios.post(`http://localhost:3002/playlist/${id}/views`);
+    } catch (error) {
+      console.error('Error updating views:', error);
+    }
+  };
+
   useEffect(() => {
     const updatePlaylist = async () => {
       try {
@@ -19,16 +26,15 @@ export const Playlist = () => {
       }
     };
 
-    // Lắng nghe sự thay đổi của playlist từ backend mỗi 10 giây
     const interval = setInterval(() => {
       updatePlaylist();
-    }, 500); // Thay đổi thời gian tùy thuộc vào tần suất bạn muốn
+    }, 500); 
 
-    return () => clearInterval(interval); // Cleanup để ngừng lắng nghe khi component unmount
-  }, []); // [] đảm bảo useEffect này chỉ chạy một lần sau khi component mount
+    return () => clearInterval(interval); 
+  }, []);
 
   const renderVideo = (list, index) => (
-    <div key={index} className="video-wrapper">
+    <div key={index} className="video-wrapper" onClick={() => handleVideoClick(list.id)}>
       <iframe
         src={list.src}
         title="YouTube video player"

@@ -16,28 +16,31 @@ export class PlaylistController {
     return this.playlistService.create(createPlaylistDto);
   }
 
+  @Post(':id/views')
+  incrementViews(@Param('id') id: string) {
+    return this.playlistService.incrementViews(+id);
+  }
+
   @Get()
-  // @UseGuards(JwtAuthGuard)
   findAll() {
     return this.playlistService.findAll();
   }
 
   @Get(':id')
-  // @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.playlistService.findOneVideo(+id);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')  // Chỉ admin mới có quyền cập nhật vid
+  @Roles('admin')
   update(@Param('id') id: string, @Body() updatePlaylistDto: UpdatePlaylistDto) {
     return this.playlistService.update(+id, updatePlaylistDto);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')  // Chỉ admin mới có quyền xóa vid
+  @Roles('admin')  
   remove(@Param('id') id: string) {
     return this.playlistService.remove(+id);
   }

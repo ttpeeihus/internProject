@@ -1,6 +1,5 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -19,12 +18,12 @@ export class RolesGuard implements CanActivate {
     const user = request.user;
 
     if (!user || !user.roles || user.roles.length === 0) {
-      throw new UnauthorizedException('Access denied, user information is missing or invalid');
+      throw new UnauthorizedException('Truy cập bị từ chối, thông tin người dùng bị thiếu hoặc không hợp lệ');
     }
 
     const hasRole = roles.some(role => user.roles.includes(role));
     if (!hasRole) {
-      throw new UnauthorizedException('Access denied, insufficient permissions');
+      throw new UnauthorizedException('Truy cập bị từ chối, không đủ quyền');
     }
 
     return true;
