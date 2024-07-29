@@ -28,27 +28,21 @@ let PlaylistService = class PlaylistService {
         return this.videoRepository.save(newVideo);
     }
     findAll() {
-        console.log("Lấy danh sách video thành công");
         return this.videoRepository.find();
     }
     findOneVideo(id) {
-        const options = {
-            where: {
-                id: id,
-            },
-        };
-        let vid = this.videoRepository.findOne(options);
+        let vid = this.videoRepository.findOne({ where: { id: id } });
         if (!vid) {
-            console.log(`Video with ID ${id} not found`);
+            console.log(`Không tìm thấy video có ID = ${id}`);
             return null;
         }
-        console.log("Lấy video có id =" + id + " " + vid);
+        console.log(`Lấy video có id = ${id} thành công`);
         return vid;
     }
     async update(id, updateVideoDto) {
         const vid = await this.findOneVideo(id);
         if (!vid) {
-            console.log(`Video with ID ${id} not found`);
+            console.log(`Không tìm thấy video có ID = ${id}`);
             return null;
         }
         if (updateVideoDto.avtUser !== undefined) {
@@ -67,18 +61,27 @@ let PlaylistService = class PlaylistService {
             vid.watched = updateVideoDto.watched;
         }
         await this.videoRepository.save(vid);
-        console.log(vid);
+        console.log(`Cập nhật video có id = ${id} thành công`);
         return 'Video has been successfully updated';
     }
     async remove(id) {
         const vid = await this.findOneVideo(id);
         if (!vid) {
-            console.log(`Video with ID ${id} not found`);
-            throw new common_2.NotFoundException(`Video with ID ${id} not found`);
+            console.log(`Không tìm thấy video có ID = ${id}`);
+            throw new common_2.NotFoundException(`Không tìm thấy video có ID = ${id}`);
         }
         await this.videoRepository.delete(id);
-        console.log(`delete ${vid}`);
+        console.log(`Xóa video có id = ${id} thành công`);
         return `Video with ID ${id} has been successfully deleted`;
+    }
+    async incrementViews(id) {
+        const video = await this.findOneVideo(id);
+        if (video) {
+            video.watched = String(Number(video.watched) + 1);
+            console.log("Tăng views thành công video có id = " + id);
+            await this.videoRepository.save(video);
+        }
+        return video;
     }
 };
 exports.PlaylistService = PlaylistService;

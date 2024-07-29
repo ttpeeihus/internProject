@@ -10,4 +10,5 @@ export declare class PlaylistService {
     findOneVideo(id: number): Promise<Playlist | null> | null;
     update(id: number, updateVideoDto: UpdatePlaylistDto): Promise<"Video has been successfully updated" | null>;
     remove(id: number): Promise<string>;
+    incrementViews(id: number): Promise<Playlist | null>;
 }

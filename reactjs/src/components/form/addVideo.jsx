@@ -11,6 +11,7 @@ export const AddVideo = () => {
 
         try {
             const response = await addVideo(src, name);
+            console.log(response);
             alert('Tạo video thành công.')        
         } catch (error) {
             console.error('Error signing up:', error);

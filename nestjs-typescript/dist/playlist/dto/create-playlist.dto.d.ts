@@ -5,6 +5,4 @@ export declare class CreatePlaylistDto {
     author: string;
     watched: string;
     date: string;
-    constructor();
-    private getCurrentDateFormatted;
 }

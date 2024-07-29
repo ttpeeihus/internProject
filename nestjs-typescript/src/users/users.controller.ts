@@ -19,28 +19,28 @@ export class UsersController {
 
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')  // Chỉ admin mới có quyền xem danh sách người dùng
+  @Roles('admin')
   async findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')  // Chỉ admin mới có quyền xem chi tiết người dùng
+  @Roles('admin')
   findOne(@Param('id') id: string) {
     return this.usersService.findOneUser(+id);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')  // Chỉ admin mới có quyền cập nhật người dùng
+  @Roles('admin') 
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')  // Chỉ admin mới có quyền xóa người dùng
+  @Roles('admin') 
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }

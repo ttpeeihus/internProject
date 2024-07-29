@@ -16,19 +16,24 @@ export const Playlist = () => {
     setIsVisible(!isVisible);
   };
 
+  const handleVideoClick = async (id) => {
+    try {
+      await axios.post(`http://localhost:3002/playlist/${id}/views`);
+    } catch (error) {
+      console.error('Error updating views:', error);
+    }
+  };
+
   useEffect(() => {
     const updatePlaylist = async () => {
       try {
         const token = localStorage.getItem('token');
-
         const options = {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         };
-
         let response = await axios.get('http://localhost:3002/playlist/', options);
-
         const sortedPlaylist = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
         setPlayList(sortedPlaylist);
       } catch (error) {
@@ -36,16 +41,15 @@ export const Playlist = () => {
       }
     };
 
-    // Lắng nghe sự thay đổi của playlist từ backend mỗi 10 giây
     const interval = setInterval(() => {
       updatePlaylist();
-    }, 500); // Thay đổi thời gian tùy thuộc vào tần suất bạn muốn
+    }, 500); 
 
-    return () => clearInterval(interval); // Cleanup để ngừng lắng nghe khi component unmount
+    return () => clearInterval(interval);
   }, []);
 
   const renderVideo = (list, index) => (
-    <div key={index} className="video-wrapper">
+    <div key={index} className="video-wrapper" onClick={() => handleVideoClick(list.id)}>
       <iframe
         src={list.src}
         title="YouTube video player"
@@ -62,8 +66,8 @@ export const Playlist = () => {
             <div className="date">• {timeAgo(list.date)}</div>
           </div>
         </div>
-        <div className="change" onClick={() => editbtn(list.id)}>Sửa</div>
-        <div className="delete" onClick={() => delVideo(list.id)}>Xóa</div>
+        <div className="change" onClick={(e) => { e.stopPropagation(); editbtn(list.id); }}>Sửa</div>
+        <div className="delete" onClick={(e) => { e.stopPropagation(); delVideo(list.id); }}>Xóa</div>
       </div>
     </div>
   );

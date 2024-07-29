@@ -3,7 +3,6 @@ import { Injectable, NotFoundException,  } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions } from 'typeorm';
 import { Repository } from 'typeorm';
 import { Users } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
@@ -38,43 +37,32 @@ export class UsersService {
       console.log(newUser);
       return 'Tạo tài khoản thành công';
     } catch (error) {
-      console.error('Error creating user:', error);
+      console.error('Đã xảy ra lỗi khi tạo tài khoản:', error);
       // throw new Error('Đã xảy ra lỗi khi tạo tài khoản');
     }
   }
 
   findAll() {
-    console.log("Lấy danh sách người dùng thành công");
     return this.userRepository.find();
   }
 
   findOneUserName(username: string) {
-    const options: FindOneOptions<Users> = {
-      where: {
-        Username: username,
-      },
-    };
-    let user = this.userRepository.findOne(options);
+    let user = this.userRepository.findOne({where: {Username: username}});
     if (!user) {
-      console.log(`User with username ${username} not found`);
+      console.log(`Không tìm thấy người dùng với tên người dùng ${username}`);
       return null;
     }
-    console.log("Lấy người dùng có username ="+ username +" "+ user);
+    console.log("Lấy người dùng có username = "+ username);
     return user;
   }
 
   findOneUser(UserID: number) {
-    const options: FindOneOptions<Users> = {
-      where: {
-        UserID: UserID,
-      },
-    };
-    let user = this.userRepository.findOne(options);
+    let user = this.userRepository.findOne({where: {UserID: UserID}});
     if (!user) {
-      console.log(`User with ID ${UserID} not found`);
+      console.log(`Không tìm thấy người dùng với ID = ${UserID}`);
       return null;
     }
-    console.log("Lấy người dùng có ID ="+ UserID +" "+ user);
+    console.log("Lấy người dùng có ID = "+ UserID);
     return user;
   }
 
@@ -82,38 +70,49 @@ export class UsersService {
     const user = await this.findOneUser(id);
 
     if (!user) {
-      console.log(`User with ID ${id} not found`);
-      return null;
+        console.log(`Không tìm thấy người dùng với ID = ${id}`);
+        return null;
     }
 
-    if (updateUserDto.Username !== undefined) {
-      user.Username = updateUserDto.Username;
+    let updated = false;
+
+    if (updateUserDto.Username !== undefined && updateUserDto.Username !== user.Username) {
+        user.Username = updateUserDto.Username;
+        updated = true;
     }
-    if (updateUserDto.Email !== undefined) {
-      user.Email = updateUserDto.Email;
+    if (updateUserDto.Email !== undefined && updateUserDto.Email !== user.Email) {
+        user.Email = updateUserDto.Email;
+        updated = true;
     }
-    if (updateUserDto.Role !== undefined) {
-      user.Role = updateUserDto.Role;
+    if (updateUserDto.Role !== undefined && updateUserDto.Role !== user.Role) {
+        user.Role = updateUserDto.Role;
+        updated = true;
     }
-    if (updateUserDto.PasswordHash !== undefined) {
-      const hashedPassword = await bcrypt.hash(updateUserDto.PasswordHash, 10);
-      user.PasswordHash = hashedPassword;
+    if (updateUserDto.PasswordHash !== undefined && updateUserDto.PasswordHash !== user.PasswordHash) {
+        const hashedPassword = await bcrypt.hash(updateUserDto.PasswordHash, 10);
+        user.PasswordHash = hashedPassword;
+        updated = true;
     }
 
-    await this.userRepository.save(user);
-    console.log("update "+ user);
+    if (updated) {
+        await this.userRepository.save(user);
+        console.log("Người dùng với ID: ", id, " đã được cập nhật thành công");
+    } else {
+        console.log("Không phát hiện thay đổi cho người dùng với ID: ", id);
+    }
+
     return user;
-  }
+}
 
   async remove(id: number) {
     const user = await this.findOneUser(id);
 
     if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
+      throw new NotFoundException(`Không tìm thấy người dùng với ID = ${id}`);
     }
 
     await this.userRepository.delete(id);
-    console.log(`delete ${user}`);
+    console.log(`Xóa người dùng có ID = ${id} thành công`);
     return `User with ID ${id} has been successfully deleted`;
   }
 
@@ -131,14 +130,14 @@ export class UsersService {
       // Tạo JWT token
       const payload = {
         username: user.Username,
-        sub: user.UserID, // Thay bằng trường ID của người dùng (UserID hoặc những gì tương tự)
+        sub: user.UserID,
         roles: user.Role
       };
-      const token = jwt.sign(payload, jwtConstants.secret, { expiresIn: '1h' });
+      const token = jwt.sign(payload, jwtConstants.secret, { expiresIn: '7d' });
       const role = String(user.Role); 
       const username = String(user.Username);
       
-      return { token, role, username }; // Trả về đối tượng chứa cả token và role
+      return { token, role, username };
       
     } else {
       console.log('Mật khẩu không chính xác');
