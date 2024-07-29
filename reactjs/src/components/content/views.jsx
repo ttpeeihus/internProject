@@ -45,7 +45,7 @@ export const Views = () => {
       });
     } else {
       console.error('Invalid data format or empty array');
-      setChartData({ labels: [], datasets: [] }); // Ensure chartData is always defined
+      setChartData({ labels: [], datasets: [] });
     }
   };
 

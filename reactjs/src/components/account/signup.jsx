@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './style.css'; // Import CSS file for styling
-import { signUp } from '../function/signup'; // Import signUp function
+import './style.css'; 
+import { signUp } from '../function/signup'; 
 import { validateUsernamePassword } from '../function/signin';
 
 export const Signup = () => {
@@ -21,29 +21,24 @@ export const Signup = () => {
 
   const handleSignUp = async () => {
     try {
-      // Validate username and password (optional)
       if (!validateUsernamePassword(username, password)) {
-        return; // Return early if validation fails
+        return; 
       }
 
-      // Validate password match
       if (password !== checkPassword) {
         alert('Mật khẩu không khớp.');
         return;
       }
 
-      // Call signUp function from functionsigin.js
       const response = await signUp(username, password, email);
 
       alert(response);
 
       if (response === 'Tạo tài khoản thành công') {
-        // Redirect to login page on successful signup
         window.location.replace('/signin');
       }
     } catch (error) {
       console.error('Error signing up:', error);
-      // Handle error (e.g., display error message)
       alert('Đăng ký không thành công. Vui lòng thử lại sau.');
     }
   };

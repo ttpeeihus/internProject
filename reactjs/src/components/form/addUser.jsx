@@ -9,7 +9,7 @@ export const AddUser = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [role, setRole] = useState('');  // Default to an empty string
+    const [role, setRole] = useState('');  
 
     const handleSubmit = async (e) => {
         e.preventDefault();

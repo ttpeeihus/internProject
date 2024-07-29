@@ -9,7 +9,7 @@ export const AdminUserHeader = () => {
     const [formIsVisible, setFormIsVisible] = useState(false);
 
     const search = () => {
-        // Implement your search logic here
+        
     };
 
     const addUser = () => {
@@ -17,7 +17,7 @@ export const AdminUserHeader = () => {
     };
 
     const accounts = () => {
-        setIsVisible(!isVisible); // Toggle isVisible state
+        setIsVisible(!isVisible); 
     };
 
     const logout = () => {

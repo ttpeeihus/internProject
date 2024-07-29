@@ -1,10 +1,7 @@
-// functionsigin.js
-
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3002/users'; // Thay thế bằng URL API thực tế của bạn
+const baseURL = 'http://localhost:3002/users';
 
-// Hàm đăng ký người dùng sử dụng Axios
 export const signUp = async (username, password, email, role) => {
   try {
     const response = await axios.post(`${baseURL}/addUser`, {
@@ -16,6 +13,6 @@ export const signUp = async (username, password, email, role) => {
     return response.data;
   } catch (error) {
     console.error('Error signing up:', error);
-    throw error; // Ném lỗi để bên gọi xử lý
+    throw error; 
   }
 };

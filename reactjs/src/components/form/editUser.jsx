@@ -36,7 +36,7 @@ export const EditUser = ({ idUser, UserEdit }) => {
             alert('Sửa không thành công. Vui lòng thử lại sau.');
         }
         console.log('Submitted:', { username, password, email, role });
-        // Reset form fields if needed
+
         setUsername('');
         setPassword('');
         setEmail('');
