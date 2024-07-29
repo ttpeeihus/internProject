@@ -20,7 +20,7 @@ const roles_decorator_1 = require("./auth/decorators/roles.decorator");
 let AppController = class AppController {
     getUser(req) {
         console.log(req.user);
-        console.log("Xac thuc Thành công");
+        console.log("Xác thực thành công");
     }
 };
 exports.AppController = AppController;

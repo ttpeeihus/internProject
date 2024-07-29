@@ -1,4 +1,3 @@
-// guest.jsx
 import React, { useState } from 'react';
 import '../css/header.css';
 
@@ -8,11 +7,11 @@ export const Guest = () => {
 
 
     const search = () => {
-        // Define your search logic here if needed
+
     };
 
     const accounts = () => {
-        setIsVisible(!isVisible); // Toggle isVisible state
+        setIsVisible(!isVisible);
     };
 
     return (

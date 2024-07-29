@@ -29,11 +29,11 @@ export const addVideo = (src, name) => {
     })
     .then(response => {
         console.log('Video added successfully:', response.data);
-        return response.data; // Trả về dữ liệu từ server nếu cần thiết
+        return response.data; 
     })
     .catch(error => {
         console.error('Error adding video:', error);
-        throw error; // Ném lỗi để component gọi hàm này có thể xử lý
+        throw error; 
     });
 };
   
@@ -54,12 +54,13 @@ export const logout = (username) => {
                 window.location.replace("/login");
             }
         } else {
-            // Handle other statuses if needed
+            console.error('Error logging out:', response);
+            throw response; 
         }
     })
     .catch(error => {
         console.error('Error logging out:', error);
-        throw error; // Ném lỗi để component gọi hàm này có thể xử lý
+        throw error;
     });
 };
 
@@ -114,10 +115,8 @@ export const editUser = (editUser) => {
 };
 
 export const delVideo = (id) => {
-    // Hiển thị hộp thoại xác nhận trước khi xóa
     const confirmDelete = window.confirm('Bạn có chắc chắn muốn xóa video này?');
 
-    // Nếu người dùng chọn "OK"
     if (confirmDelete) {
 
         const options = {
@@ -130,23 +129,21 @@ export const delVideo = (id) => {
         return axios.delete(`${baseVideoURL}/${id}`, options)
             .then(response => {
                 console.log('Video delete successfully:', response.data);
-                return response.data; // Optionally return data if needed
+                return response.data; 
             })
             .catch(error => {
                 console.error('Error delete video:', error);
-                throw error; // Propagate the error further
+                throw error; 
             });
     } else {
         console.log('Không xóa video');
-        return Promise.resolve({ message: 'Không xóa video' }); // Resolve with a message
+        return Promise.resolve({ message: 'Không xóa video' });
     }
 };
 
 export const delUser = (id) => {
-    // Hiển thị hộp thoại xác nhận trước khi xóa
     const confirmDelete = window.confirm('Bạn có chắc chắn muốn xóa user này?');
 
-    // Nếu người dùng chọn "OK"
     if (confirmDelete) {
 
         const options = {

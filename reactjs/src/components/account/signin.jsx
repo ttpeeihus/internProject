@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './style.css'; // Import CSS file for styling
+import './style.css';
 import { signIn, validateUsernamePassword } from '../function/signin'; // Import signIn function
 
 export const Signin = () => {
@@ -13,20 +13,16 @@ export const Signin = () => {
 
   const handleSignIn = async () => {
     try {
-      // Validate username and password (optional)
       if (!validateUsernamePassword(username, password)) {
-        return; // Return early if validation fails
+        return; 
       }
-      // Call signIn function from functionsigin.js
       const response = await signIn(username, password);
 
       if (response === 'Đăng nhập thành công.') {
-        // Redirect to homepage on succes sful login
         window.location.replace('/user');
       }
     } catch (error) {
       console.error('Error signing in:', error);
-      // Handle error (e.g., display error message)
       alert('Đăng nhập không thành công. Vui lòng thử lại sau.');
     }
   };

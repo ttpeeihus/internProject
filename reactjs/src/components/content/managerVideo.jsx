@@ -8,10 +8,12 @@ import { EditVideo } from '../form/editVideo';
 
 export const Playlist = () => {
   const [playList, setPlayList] = useState([]);
-  const [isVisible, setIsVisible] = useState(false); // State để điều khiển hiển thị EditVideo
+  const [isVisible, setIsVisible] = useState(false);
   const [idVideo, setIdVideo] = useState(0);
+  const [editVideo, setEditVideo] = useState({});
 
-  const editbtn = (id) => {
+  const editbtn = (id, editVideo) => {
+    setEditVideo(editVideo);
     setIdVideo(id);
     setIsVisible(!isVisible);
   };
@@ -66,8 +68,8 @@ export const Playlist = () => {
             <div className="date">• {timeAgo(list.date)}</div>
           </div>
         </div>
-        <div className="change" onClick={(e) => { e.stopPropagation(); editbtn(list.id); }}>Sửa</div>
-        <div className="delete" onClick={(e) => { e.stopPropagation(); delVideo(list.id); }}>Xóa</div>
+        <div className="change" onClick={ () => editbtn(list.id, list) }>Sửa</div>
+        <div className="delete" onClick={ () => delVideo(list.id) }>Xóa</div>
       </div>
     </div>
   );
@@ -80,7 +82,7 @@ export const Playlist = () => {
       </div>
       <div className={`edit-video ${isVisible ? 'visible' : ''}`}>
         <div id="overlay" onClick={() => editbtn(0)}></div>
-        <EditVideo idVideo={idVideo}/>
+        <EditVideo idVideo={idVideo} VideoEdit={editVideo}/>
       </div>
     </div>
   );

@@ -1,15 +1,22 @@
-// editVideo.jsx
-
-import React from 'react';
 import '../css/editform.css';
+import { useEffect, useState } from 'react';
 import { editVideo } from '../function/api';
 
+export const EditVideo = ({idVideo, VideoEdit}) => {
+    const [name, setName] = useState('');
 
-export const EditVideo = ({idVideo}) => {
+    useEffect(() => {
+        if (VideoEdit) {
+            setName(VideoEdit.name || '');
+        }
+    }
+    , [VideoEdit]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const newName = {name: e.target.changeName.value,
-                        id: idVideo
+        const newName = {
+            name: name,
+            id: idVideo
         };
         try {
             const response = await editVideo(newName);
@@ -21,8 +28,9 @@ export const EditVideo = ({idVideo}) => {
             alert('Sửa không thành công. Vui lòng thử lại sau.');
         }
         console.log('Submitted new name:', newName);
-        e.target.reset();
-    };
+
+        setName('');   
+    }
 
     return (
         <div>
@@ -34,6 +42,8 @@ export const EditVideo = ({idVideo}) => {
                     type="text"
                     id="changeName"
                     name="changeName"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     required
                 /><br /><br />
                 <button type="submit" id="changeNamesubmit">Submit</button>

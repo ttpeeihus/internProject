@@ -6,7 +6,7 @@ import EditUser from '../form/editUser';
 
 export const Users = () => {
   const [users, setUser] = useState([]);
-  const [isVisible, setIsVisible] = useState(false); // State để điều khiển hiển thị EditUser
+  const [isVisible, setIsVisible] = useState(false);
   const [editUser, setEditUser] = useState({});
   const [idUser, setIdUser] = useState(0);
 
@@ -82,8 +82,6 @@ export const Users = () => {
         );
       };
       
-  
-  // Ví dụ sử dụng:
     return (
       <div className="container">
         {renderUser(users)}
