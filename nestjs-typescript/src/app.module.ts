@@ -1,19 +1,21 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './mongodb/users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { PlaylistModule } from './playlist/playlist.module';
-import { databaseConfig } from './config/database.config';
+import { PlaylistModule } from './mongodb/playlist/playlist.module';
 import { RolesGuard } from './auth/guards/roles.guard';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigModule } from '@nestjs/config';
+import { PrismaModule } from './config/prisma/prisma.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    TypeOrmModule.forRoot(databaseConfig),
+    ConfigModule.forRoot({
+      envFilePath: ['.mongodb.env','.mysql.env'],
+      isGlobal: true, 
+    }),
+    PrismaModule,
     UsersModule,
     PlaylistModule,
     AuthModule,

@@ -7,25 +7,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
+const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
+const jwt_1 = require("@nestjs/jwt");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const users_module_1 = require("./users/users.module");
-const common_1 = require("@nestjs/common");
-const typeorm_1 = require("@nestjs/typeorm");
+const users_module_1 = require("./mongodb/users/users.module");
 const auth_module_1 = require("./auth/auth.module");
-const playlist_module_1 = require("./playlist/playlist.module");
-const database_config_1 = require("./config/database.config");
+const playlist_module_1 = require("./mongodb/playlist/playlist.module");
 const roles_guard_1 = require("./auth/guards/roles.guard");
-const jwt_1 = require("@nestjs/jwt");
-const config_1 = require("@nestjs/config");
+const prisma_module_1 = require("./config/prisma/prisma.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            config_1.ConfigModule.forRoot(),
-            typeorm_1.TypeOrmModule.forRoot(database_config_1.databaseConfig),
+            config_1.ConfigModule.forRoot({
+                envFilePath: ['.mongodb.env', '.mysql.env'],
+                isGlobal: true,
+            }),
+            prisma_module_1.PrismaModule,
             users_module_1.UsersModule,
             playlist_module_1.PlaylistModule,
             auth_module_1.AuthModule,
