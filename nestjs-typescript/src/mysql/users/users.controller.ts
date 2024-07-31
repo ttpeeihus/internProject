@@ -1,4 +1,3 @@
-// users.controller.ts
 import { Controller, Get, Post, Body, Param, Delete, Patch, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,6 +16,16 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Post('checkin')
+  async checkin(@Body('username') username: string, @Body('password') password: string): Promise<{ token: string; role: string; username:string } | string> {
+    return this.usersService.checkin(username, password);
+  }
+
+  @Post('repass')
+  async repass(@Body('username') username: string, @Body('password') newPassword: string, @Body('email') email: string): Promise<string> {
+    return this.usersService.repass(username, newPassword, email);
+  }
+
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
@@ -24,29 +33,6 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  // mysql
-  // @Get(':id')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles('admin')
-  // findOne(@Param('id') id: string) {
-  //   return this.usersService.findOneUser(+id);
-  // }
-
-  // @Patch(':id')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles('admin') 
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.update(+id, updateUserDto);
-  // }
-
-  // @Delete(':id')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles('admin') 
-  // remove(@Param('id') id: string) {
-  //   return this.usersService.remove(+id);
-  // }
-
-  // mongodb
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
@@ -67,15 +53,4 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(id.toString());
   }
-
-  @Post('checkin')
-  async checkin(@Body('username') username: string, @Body('password') password: string): Promise<{ token: string; role: string; username:string } | string> {
-    return this.usersService.checkin(username, password);
-  }
-
-  @Post('repass')
-  async repass(@Body('username') username: string, @Body('password') newPassword: string, @Body('email') email: string): Promise<string> {
-    return this.usersService.repass(username, newPassword, email);
-  }
-
 }

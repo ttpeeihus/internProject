@@ -12,9 +12,9 @@ const config_1 = require("@nestjs/config");
 const jwt_1 = require("@nestjs/jwt");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const users_module_1 = require("./mongodb/users/users.module");
 const auth_module_1 = require("./auth/auth.module");
-const playlist_module_1 = require("./mongodb/playlist/playlist.module");
+const playlist_module_1 = require("./mysql/playlist/playlist.module");
+const users_module_1 = require("./mysql/users/users.module");
 const roles_guard_1 = require("./auth/guards/roles.guard");
 const prisma_module_1 = require("./config/prisma/prisma.module");
 let AppModule = class AppModule {
@@ -24,7 +24,7 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({
-                envFilePath: ['.mongodb.env', '.mysql.env'],
+                envFilePath: ['.mysql.env'],
                 isGlobal: true,
             }),
             prisma_module_1.PrismaModule,

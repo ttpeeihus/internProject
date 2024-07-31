@@ -27,6 +27,12 @@ let UsersController = class UsersController {
     create(createUserDto) {
         return this.usersService.create(createUserDto);
     }
+    async checkin(username, password) {
+        return this.usersService.checkin(username, password);
+    }
+    async repass(username, newPassword, email) {
+        return this.usersService.repass(username, newPassword, email);
+    }
     async findAll() {
         return this.usersService.findAll();
     }
@@ -39,12 +45,6 @@ let UsersController = class UsersController {
     remove(id) {
         return this.usersService.remove(id.toString());
     }
-    async checkin(username, password) {
-        return this.usersService.checkin(username, password);
-    }
-    async repass(username, newPassword, email) {
-        return this.usersService.repass(username, newPassword, email);
-    }
 };
 exports.UsersController = UsersController;
 __decorate([
@@ -54,6 +54,23 @@ __decorate([
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)('checkin'),
+    __param(0, (0, common_1.Body)('username')),
+    __param(1, (0, common_1.Body)('password')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "checkin", null);
+__decorate([
+    (0, common_1.Post)('repass'),
+    __param(0, (0, common_1.Body)('username')),
+    __param(1, (0, common_1.Body)('password')),
+    __param(2, (0, common_1.Body)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "repass", null);
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
@@ -90,23 +107,6 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "remove", null);
-__decorate([
-    (0, common_1.Post)('checkin'),
-    __param(0, (0, common_1.Body)('username')),
-    __param(1, (0, common_1.Body)('password')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "checkin", null);
-__decorate([
-    (0, common_1.Post)('repass'),
-    __param(0, (0, common_1.Body)('username')),
-    __param(1, (0, common_1.Body)('password')),
-    __param(2, (0, common_1.Body)('email')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String]),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "repass", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])

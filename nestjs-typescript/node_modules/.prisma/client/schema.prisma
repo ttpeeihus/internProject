@@ -3,24 +3,29 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model playlist {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  author  String
-  avtUser String
-  date    String
-  name    String
-  src     String
-  watched String
+model Users {
+  UserID       Int         @id @default(autoincrement())
+  Username     String?     @unique(map: "Username") @db.VarChar(50)
+  PasswordHash String?     @db.VarChar(255)
+  Email        String?     @db.VarChar(100)
+  Role         Users_Role?
 }
 
-model users {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  Email        String
-  PasswordHash String
-  Role         String
-  Username     String
+model playlist {
+  id      Int     @id @default(autoincrement())
+  avtUser String? @db.VarChar(255)
+  src     String? @db.VarChar(255)
+  name    String? @db.VarChar(255)
+  author  String? @db.VarChar(255)
+  watched String? @db.VarChar(20)
+  date    String? @db.VarChar(20)
+}
+
+enum Users_Role {
+  admin
+  user
 }

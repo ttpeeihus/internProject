@@ -8,7 +8,5 @@ export declare class Users {
     PasswordHash: string;
     Email: string;
     Role: Role;
-    comparePassword(password: string): Promise<boolean>;
-    hashPassword(password: string): Promise<void>;
 }
 export {};

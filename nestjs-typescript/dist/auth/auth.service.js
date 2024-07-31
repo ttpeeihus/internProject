@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const users_service_1 = require("../mongodb/users/users.service");
+const users_service_1 = require("../mysql/users/users.service");
 let AuthService = class AuthService {
     constructor(usersService) {
         this.usersService = usersService;

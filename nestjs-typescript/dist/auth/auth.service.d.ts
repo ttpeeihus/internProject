@@ -1,4 +1,4 @@
-import { UsersService } from '../mongodb/users/users.service';
+import { UsersService } from '../mysql/users/users.service';
 export declare class AuthService {
     private usersService;
     constructor(usersService: UsersService);

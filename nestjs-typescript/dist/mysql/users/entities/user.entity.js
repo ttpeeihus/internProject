@@ -11,20 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Users = void 0;
 const typeorm_1 = require("typeorm");
-const bcrypt = require("bcrypt");
 var Role;
 (function (Role) {
     Role["admin"] = "admin";
     Role["user"] = "user";
 })(Role || (Role = {}));
 let Users = class Users {
-    async comparePassword(password) {
-        return await bcrypt.compare(password, this.PasswordHash);
-    }
-    async hashPassword(password) {
-        const saltRounds = 10;
-        this.PasswordHash = await bcrypt.hash(password, saltRounds);
-    }
 };
 exports.Users = Users;
 __decorate([

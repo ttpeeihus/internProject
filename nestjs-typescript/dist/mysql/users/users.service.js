@@ -20,8 +20,8 @@ let UsersService = class UsersService {
         this.prisma = prisma;
     }
     async create(createUserDto) {
-        const user = await this.prisma.users.findUnique({ where: { id: createUserDto.Username } });
-        const email = await this.prisma.users.findUnique({ where: { id: createUserDto.Email } });
+        const user = await this.prisma.users.findFirst({ where: { Username: createUserDto.Username } });
+        const email = await this.prisma.users.findFirst({ where: { Email: createUserDto.Email } });
         if (user) {
             return 'Tên người dùng đã được sử dụng';
         }
@@ -47,7 +47,7 @@ let UsersService = class UsersService {
         return this.prisma.users.findMany();
     }
     async findOneUserName(username) {
-        const user = await this.prisma.users.findUnique({ where: { id: username } });
+        const user = await this.prisma.users.findFirst({ where: { Username: username } });
         if (!user) {
             console.log(`Không tìm thấy người dùng với tên người dùng ${username}`);
             return null;
@@ -56,7 +56,7 @@ let UsersService = class UsersService {
         return user;
     }
     async findOneUser(id) {
-        const user = await this.prisma.users.findUnique({ where: { id } });
+        const user = await this.prisma.users.findFirst({ where: { UserID: Number(id) } });
         if (!user) {
             console.log(`Không tìm thấy người dùng với ID = ${id}`);
             return null;
@@ -90,7 +90,7 @@ let UsersService = class UsersService {
         }
         if (updated) {
             await this.prisma.users.update({
-                where: { id },
+                where: { UserID: Number(id) },
                 data: user,
             });
             console.log('Người dùng với ID: ', id, ' đã được cập nhật thành công');
@@ -105,7 +105,7 @@ let UsersService = class UsersService {
         if (!user) {
             throw new common_1.NotFoundException(`Không tìm thấy người dùng với ID = ${id}`);
         }
-        await this.prisma.users.delete({ where: { id } });
+        await this.prisma.users.delete({ where: { UserID: Number(id) } });
         console.log(`Xóa người dùng có ID = ${id} thành công`);
         return `User with ID ${id} has been successfully deleted`;
     }
@@ -115,11 +115,11 @@ let UsersService = class UsersService {
             console.log('Người dùng không tồn tại');
             return 'Người dùng không tồn tại';
         }
-        if (await bcrypt.compare(password, user.PasswordHash)) {
+        if (await bcrypt.compare(password, String(user.PasswordHash))) {
             console.log('Đăng nhập thành công');
             const payload = {
                 username: user.Username,
-                sub: user.id,
+                sub: user.UserID,
                 roles: user.Role,
             };
             const token = jwt.sign(payload, constants_1.jwtConstants.secret, { expiresIn: '7d' });
@@ -147,7 +147,7 @@ let UsersService = class UsersService {
         }
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         await this.prisma.users.update({
-            where: { id: user.id },
+            where: { UserID: user.UserID },
             data: { PasswordHash: hashedPassword },
         });
         console.log('Đổi mật khẩu thành công');

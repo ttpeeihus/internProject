@@ -3,16 +3,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './mongodb/users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { PlaylistModule } from './mongodb/playlist/playlist.module';
+import { PlaylistModule } from './mysql/playlist/playlist.module';
+import { UsersModule } from './mysql/users/users.module';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { PrismaModule } from './config/prisma/prisma.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.mongodb.env','.mysql.env'],
+      envFilePath: ['.mysql.env'],
       isGlobal: true, 
     }),
     PrismaModule,

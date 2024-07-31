@@ -6,32 +6,32 @@ export declare class UsersService {
     constructor(prisma: PrismaService);
     create(createUserDto: CreateUserDto): Promise<"Tên người dùng đã được sử dụng" | "Email đã được sử dụng" | "Tạo tài khoản thành công" | undefined>;
     findAll(): Promise<{
-        id: string;
-        Email: string;
-        PasswordHash: string;
-        Role: string;
-        Username: string;
+        UserID: number;
+        Username: string | null;
+        PasswordHash: string | null;
+        Email: string | null;
+        Role: import(".prisma/client").$Enums.Users_Role | null;
     }[]>;
     findOneUserName(username: string): Promise<{
-        id: string;
-        Email: string;
-        PasswordHash: string;
-        Role: string;
-        Username: string;
+        UserID: number;
+        Username: string | null;
+        PasswordHash: string | null;
+        Email: string | null;
+        Role: import(".prisma/client").$Enums.Users_Role | null;
     } | null>;
     findOneUser(id: string): Promise<{
-        id: string;
-        Email: string;
-        PasswordHash: string;
-        Role: string;
-        Username: string;
+        UserID: number;
+        Username: string | null;
+        PasswordHash: string | null;
+        Email: string | null;
+        Role: import(".prisma/client").$Enums.Users_Role | null;
     } | null>;
     update(id: string, updateUserDto: UpdateUserDto): Promise<{
-        id: string;
-        Email: string;
-        PasswordHash: string;
-        Role: string;
-        Username: string;
+        UserID: number;
+        Username: string | null;
+        PasswordHash: string | null;
+        Email: string | null;
+        Role: import(".prisma/client").$Enums.Users_Role | null;
     } | null>;
     remove(id: string): Promise<string>;
     checkin(username: string, password: string): Promise<{
