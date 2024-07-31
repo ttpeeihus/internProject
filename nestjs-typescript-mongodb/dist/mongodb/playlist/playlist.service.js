@@ -34,7 +34,7 @@ let PlaylistService = class PlaylistService {
         return 'Tạo video thành công';
     }
     async findOneVideo(id) {
-        const video = await this.prisma.playlist.findUnique({
+        const video = await this.prisma.playlist.findFirst({
             where: { id },
         });
         if (!video) {

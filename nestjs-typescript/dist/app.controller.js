@@ -34,6 +34,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "getUser", null);
 exports.AppController = AppController = __decorate([
-    (0, common_1.Controller)('api')
+    (0, common_1.Controller)('app')
 ], AppController);
 //# sourceMappingURL=app.controller.js.map

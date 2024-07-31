@@ -4,7 +4,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { Roles } from './auth/decorators/roles.decorator';
 import { Request as ExpressRequest } from 'express'; 
 
-@Controller('api')
+@Controller('app')
 export class AppController {
 
   @Get('user')

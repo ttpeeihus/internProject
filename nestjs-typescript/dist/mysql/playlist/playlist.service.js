@@ -28,7 +28,7 @@ let PlaylistService = class PlaylistService {
     }
     async findOneVideo(id) {
         const video = await this.prisma.playlist.findUnique({
-            where: { id: id },
+            where: { id },
         });
         if (!video) {
             console.log(`Không tìm thấy video có ID = ${id}`);
@@ -39,14 +39,14 @@ let PlaylistService = class PlaylistService {
     }
     async update(id, updateVideoDto) {
         const video = await this.prisma.playlist.findUnique({
-            where: { id: id },
+            where: { id },
         });
         if (!video) {
             console.log(`Không tìm thấy video có ID = ${id}`);
             throw new common_1.NotFoundException(`Không tìm thấy video có ID = ${id}`);
         }
         const updatedVideo = await this.prisma.playlist.update({
-            where: { id: id },
+            where: { id },
             data: updateVideoDto,
         });
         console.log(`Cập nhật video có id = ${id} thành công`);
@@ -54,28 +54,28 @@ let PlaylistService = class PlaylistService {
     }
     async remove(id) {
         const video = await this.prisma.playlist.findUnique({
-            where: { id: id },
+            where: { id },
         });
         if (!video) {
             console.log(`Không tìm thấy video có ID = ${id}`);
             throw new common_1.NotFoundException(`Không tìm thấy video có ID = ${id}`);
         }
         await this.prisma.playlist.delete({
-            where: { id: id },
+            where: { id },
         });
         console.log(`Xóa video có id = ${id} thành công`);
         return `Video có ID ${id} đã được xóa thành công`;
     }
     async incrementViews(id) {
         const video = await this.prisma.playlist.findUnique({
-            where: { id: id },
+            where: { id },
         });
         if (!video) {
             console.log(`Không tìm thấy video có ID = ${id}`);
             return null;
         }
         const updatedVideo = await this.prisma.playlist.update({
-            where: { id: id },
+            where: { id },
             data: {
                 watched: String(Number(video.watched) + 1),
             },

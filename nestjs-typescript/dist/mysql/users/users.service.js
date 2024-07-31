@@ -46,13 +46,13 @@ let UsersService = class UsersService {
     async findAll() {
         return this.prisma.users.findMany();
     }
-    async findOneUserName(username) {
-        const user = await this.prisma.users.findFirst({ where: { Username: username } });
+    async findOneUserName(Username) {
+        const user = await this.prisma.users.findFirst({ where: { Username } });
         if (!user) {
-            console.log(`Không tìm thấy người dùng với tên người dùng ${username}`);
+            console.log(`Không tìm thấy người dùng với tên người dùng ${Username}`);
             return null;
         }
-        console.log('Lấy người dùng có username = ' + username);
+        console.log('Lấy người dùng có Username = ' + Username);
         return user;
     }
     async findOneUser(id) {

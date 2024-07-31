@@ -20,7 +20,7 @@ import { PrismaModule } from './config/prisma/prisma.module';
     PlaylistModule,
     AuthModule,
   ],
-  controllers: [AppController],
+  // controllers: [AppController],
   providers: [RolesGuard, AppService, JwtService],
   
 })

@@ -10,7 +10,6 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const jwt_1 = require("@nestjs/jwt");
-const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
 const playlist_module_1 = require("./mysql/playlist/playlist.module");
@@ -32,7 +31,6 @@ exports.AppModule = AppModule = __decorate([
             playlist_module_1.PlaylistModule,
             auth_module_1.AuthModule,
         ],
-        controllers: [app_controller_1.AppController],
         providers: [roles_guard_1.RolesGuard, app_service_1.AppService, jwt_1.JwtService],
     })
 ], AppModule);

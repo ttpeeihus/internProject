@@ -22,10 +22,8 @@ export class UsersService {
     }
 
     try {
-      // Hash mật khẩu trước khi lưu vào cơ sở dữ liệu
       const hashedPassword = await bcrypt.hash(createUserDto.PasswordHash, 10);
 
-      // Tạo một đối tượng người dùng mới với mật khẩu đã hash
       const newUser = await this.prisma.users.create({
         data: {
           ...createUserDto,
@@ -44,13 +42,13 @@ export class UsersService {
     return this.prisma.users.findMany();
   }
 
-  async findOneUserName(username: string) {
-    const user = await this.prisma.users.findFirst({ where: { Username: username } });
+  async findOneUserName(Username: string) {
+    const user = await this.prisma.users.findFirst({ where: { Username } });
     if (!user) {
-      console.log(`Không tìm thấy người dùng với tên người dùng ${username}`);
+      console.log(`Không tìm thấy người dùng với tên người dùng ${Username}`);
       return null;
     }
-    console.log('Lấy người dùng có username = ' + username);
+    console.log('Lấy người dùng có Username = ' + Username);
     return user;
   }
 
@@ -159,10 +157,8 @@ export class UsersService {
       return 'Email không khớp với người dùng';
     }
 
-    // Generate salt and hash new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // Update user's password hash
     await this.prisma.users.update({
       where: { UserID: user.UserID },
       data: { PasswordHash: hashedPassword },

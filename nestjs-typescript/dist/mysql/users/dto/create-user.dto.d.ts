@@ -1,4 +1,4 @@
-declare enum Role {
+export declare enum Role {
     admin = "admin",
     user = "user"
 }
@@ -8,4 +8,3 @@ export declare class CreateUserDto {
     Email: string;
     Role: Role;
 }
-export {};

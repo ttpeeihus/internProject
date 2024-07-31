@@ -20,8 +20,8 @@ let UsersService = class UsersService {
         this.prisma = prisma;
     }
     async create(createUserDto) {
-        const user = await this.prisma.users.findUnique({ where: { id: createUserDto.Username } });
-        const email = await this.prisma.users.findUnique({ where: { id: createUserDto.Email } });
+        const user = await this.prisma.users.findFirst({ where: { Username: createUserDto.Username } });
+        const email = await this.prisma.users.findFirst({ where: { Email: createUserDto.Email } });
         if (user) {
             return 'Tên người dùng đã được sử dụng';
         }
@@ -46,25 +46,25 @@ let UsersService = class UsersService {
     async findAll() {
         return this.prisma.users.findMany();
     }
-    async findOneUserName(username) {
+    async findOneUserName(Username) {
         try {
             const user = await this.prisma.users.findFirst({
-                where: { Username: username },
+                where: { Username },
             });
             if (!user) {
-                console.log(`Không tìm thấy người dùng với tên người dùng: ${username}`);
+                console.log(`Không tìm thấy người dùng với tên người dùng: ${Username}`);
                 return null;
             }
-            console.log(`Lấy người dùng thành công với tên người dùng: ${username}`);
+            console.log(`Lấy người dùng thành công với tên người dùng: ${Username}`);
             return user;
         }
         catch (error) {
-            console.error(`Lỗi khi tìm người dùng với tên người dùng: ${username}`, error);
-            throw new Error(`Có lỗi xảy ra khi tìm người dùng với tên người dùng: ${username}`);
+            console.error(`Lỗi khi tìm người dùng với tên người dùng: ${Username}`, error);
+            throw new Error(`Có lỗi xảy ra khi tìm người dùng với tên người dùng: ${Username}`);
         }
     }
     async findOne(id) {
-        return this.prisma.users.findUnique({ where: { id } });
+        return this.prisma.users.findFirst({ where: { id } });
     }
     async update(id, updateUserDto) {
         const user = await this.findOne(id);

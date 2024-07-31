@@ -22,7 +22,7 @@ export class PlaylistService {
 
   async findOneVideo(id: number) {
     const video = await this.prisma.playlist.findUnique({
-      where: { id: id },
+      where: { id },
     });
 
     if (!video) {
@@ -36,7 +36,7 @@ export class PlaylistService {
 
   async update(id: number, updateVideoDto: UpdatePlaylistDto) {
     const video = await this.prisma.playlist.findUnique({
-      where: { id: id },
+      where: { id },
     });
 
     if (!video) {
@@ -45,7 +45,7 @@ export class PlaylistService {
     }
 
     const updatedVideo = await this.prisma.playlist.update({
-      where: { id: id },
+      where: { id },
       data: updateVideoDto,
     });
 
@@ -55,7 +55,7 @@ export class PlaylistService {
 
   async remove(id: number) {
     const video = await this.prisma.playlist.findUnique({
-      where: { id: id },
+      where: { id },
     });
 
     if (!video) {
@@ -64,7 +64,7 @@ export class PlaylistService {
     }
 
     await this.prisma.playlist.delete({
-      where: { id: id },
+      where: { id },
     });
 
     console.log(`Xóa video có id = ${id} thành công`);
@@ -73,7 +73,7 @@ export class PlaylistService {
 
   async incrementViews(id: number): Promise<Playlist | null> {
     const video = await this.prisma.playlist.findUnique({
-      where: { id: id },
+      where: { id },
     });
   
     if (!video) {
@@ -82,7 +82,7 @@ export class PlaylistService {
     }
   
     const updatedVideo = await this.prisma.playlist.update({
-      where: { id: id },
+      where: { id },
       data: {
         watched: String(Number(video.watched) + 1),
       },

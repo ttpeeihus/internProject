@@ -12,7 +12,7 @@ export declare class UsersService {
         Role: string;
         Username: string;
     }[]>;
-    findOneUserName(username: string): Promise<{
+    findOneUserName(Username: string): Promise<{
         id: string;
         Email: string;
         PasswordHash: string;

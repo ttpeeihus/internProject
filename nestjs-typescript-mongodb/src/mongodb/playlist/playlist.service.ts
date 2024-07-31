@@ -28,7 +28,7 @@ export class PlaylistService {
   }
 
   async findOneVideo(id: string): Promise<Playlist | null> {
-    const video = await this.prisma.playlist.findUnique({
+    const video = await this.prisma.playlist.findFirst({
       where: { id },
     });
     if (!video) {
